@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
+import React,{Component} from 'react';
+import { recipes } from './tempList';
+import RecipeList from './componets/RecipeList';
+import RecipeDetails from './componets/RecipeDetails';
+
 import './App.css';
 
-function App() {
+class App extends Component {
+  
+  state = {
+    recipes: recipes,
+    url:"https://www.food2fork.com/api/search?key=e8bbdfab98f269128b08763dd9fd1e04",
+    details_id:35382,
+  };
+
+ /* async getRecipes() {
+  
+    try {
+
+      const data= await fetch(this.state.url);
+      const jsonData = await data.json();
+  
+      this.setState({
+        recipes:jsonData.recipes
+      })
+    }
+    catch(error) {
+      console.log(error)
+    }
+  }
+
+  componentDidMount() {
+    this.getRecipes()
+  } */
+
+render () {
+
+  console.log(this.state.recipes);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <RecipeList recipes={this.state.recipes}/>
+      <RecipeDetails id={this.state.details_id} />
+    </React.Fragment>
   );
+}
+
 }
 
 export default App;

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { recipe } from "../tempDetails";
 
 export default class RecipeDetails extends Component {
+  /* 
   constructor(props) {
     super(props);
 
@@ -12,6 +13,46 @@ export default class RecipeDetails extends Component {
       }`
     };
   }
+
+  async componentDidMount() {
+     try {
+
+      const data= await fetch(this.state.url);
+      const jsonData = await data.json();
+  
+      this.setState({
+        recipe:jsonData.recipes
+      })
+    }
+    catch(error) {
+      console.log(error)
+    }
+  }
+
+  } */
+
+  state = {
+    recipe: recipe
+  };
+
+  async componentDidMount() {
+    const id = this.props.id;
+    const url = `https://www.food2fork.com/api/get?key=e8bbdfab98f269128b08763dd9fd1e04&rId=${id}`;
+    try {
+      const data = await fetch(url);
+      const jsonData = await data.json();
+
+      this.setState(
+        (state, props) => {
+          return { recipe: jsonData.recipe };
+        },
+        () => {}
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   render() {
     const {
       image_url,
@@ -21,6 +62,8 @@ export default class RecipeDetails extends Component {
       title,
       ingredients
     } = this.state.recipe;
+
+    const { handleIndex } = this.props;
     return (
       <React.Fragment>
         <div className="container">
@@ -29,6 +72,7 @@ export default class RecipeDetails extends Component {
               <button
                 type="button"
                 className="btn btn-warning mb-5 text-uppercase"
+                onClick={() => handleIndex(1)}
               >
                 back to recipe list
               </button>
@@ -63,7 +107,9 @@ export default class RecipeDetails extends Component {
                 <h2 className="mt-3 mb-4">ingredients</h2>
                 {ingredients.map((item, index) => {
                   return (
-                    <li className="list-group-item text-slanted">{title} </li>
+                    <li key={index} className="list-group-item text-slanted">
+                      {item}{" "}
+                    </li>
                   );
                 })}
               </ul>
